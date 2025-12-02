@@ -1,0 +1,93 @@
+/* public/css/variables.css - Styles frontend UI */
+:root {
+    
+    --primary-color: #004580; 
+    --primary-light: #005a9e;
+    --secondary-color: #FF6600; 
+    --secondary-hover: #e65c00;
+    
+    
+    --bg-body: #F4F7FE; 
+    --bg-card: #FFFFFF;
+    --bg-sidebar: #FFFFFF;
+    
+    
+    --text-primary: #2B3674; 
+    --text-secondary: #A3AED0; 
+    --text-white: #FFFFFF;
+    
+    
+    --status-success: #05CD99;
+    --status-warning: #FFCE20;
+    --status-error: #EE5D50;
+    --status-info: #11CDEF;
+
+    
+    --shadow-card: 0px 18px 40px rgba(112, 144, 176, 0.12);
+    --shadow-sm: 0px 2px 4px rgba(0, 0, 0, 0.05);
+    
+    
+    --font-family: 'DM Sans', 'Inter', sans-serif;
+    
+    
+    --header-height: 80px;
+    --sidebar-width: 290px;
+    --sidebar-width-collapsed: 80px;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: var(--font-family);
+    background-color: var(--bg-body);
+    color: var(--text-primary);
+    overflow-x: hidden;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+ul {
+    list-style: none;
+}
+
+button {
+    cursor: pointer;
+    border: none;
+    font-family: inherit;
+}
+
+
+.card {
+    background: var(--bg-card);
+    border-radius: 20px;
+    box-shadow: var(--shadow-card);
+    padding: 20px;
+}
+
+.btn {
+    padding: 12px 24px;
+    border-radius: 10px;
+    font-weight: 700;
+    transition: all 0.3s ease;
+}
+
+.btn-primary {
+    background-color: var(--primary-color);
+    color: var(--text-white);
+}
+
+.btn-secondary {
+    background-color: var(--secondary-color);
+    color: var(--text-white);
+}
+
+.btn-secondary:hover {
+    background-color: var(--secondary-hover);
+}

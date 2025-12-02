@@ -1,0 +1,114 @@
+<!doctype html>
+<!-- public/admin_users.html - Frontend HTML template -->
+<html lang="pt-BR">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Admin - Usuários</title>
+    <link rel="stylesheet" href="/css/dashboard.css" />
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <div class="card-header"><h1>Gerenciar Usuários</h1></div>
+            <div class="card-body">
+                <section id="form-section" class="card">
+                    <h2 id="form-title">Criar Usuário</h2>
+                    <form id="userForm">
+                        <input type="hidden" id="userId" />
+                        <div class="form-group">
+                            <label for="name">Nome</label>
+                            <input id="name" class="form-control" required />
+                        </div>
+                        <div class="form-group">
+                            <label for="cpf">CPF</label>
+                            <input id="cpf" class="form-control" />
+                        </div>
+                        <div class="form-group">
+                            <label for="phone">Telefone</label>
+                            <input id="phone" class="form-control" />
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input id="email" type="email" class="form-control" required />
+                        </div>
+                        <div class="form-group">
+                            <label for="address">Endereço</label>
+                            <input id="address" class="form-control" />
+                        </div>
+                        <div class="form-group">
+                            <label>Tipo de usuário</label>
+                            <div style="display:flex;gap:12px;align-items:center;">
+                                <label><input type="radio" name="role" value="student" checked> Aluno</label>
+                                <label><input type="radio" name="role" value="professor"> Professor</label>
+                                <label><input type="radio" name="role" value="admin"> Admin</label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="courses">Cursos</label>
+                            <div id="courses" class="courses-list" aria-label="Lista de cursos">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="course_end_date">Término do curso</label>
+                            <input id="course_end_date" class="form-control" type="date" />
+                        </div>
+                        <div class="form-group">
+                            <label for="password">Senha (opcional)</label>
+                            <input id="password" class="form-control" type="password" />
+                            <small style="color:#666;display:block;margin-top:6px;">Se não informada, a senha padrão será <strong>senai@2025</strong>.</small>
+                        </div>
+                        <div style="margin-top:8px; display:flex; gap:8px;">
+                            <button type="submit" id="submitBtn" class="btn btn-primary">Criar</button>
+                            <button type="button" id="resetBtn" class="btn">Limpar</button>
+                        </div>
+                        <div id="formMessage" style="color:red;margin-top:8px"></div>
+                    </form>
+        </section>
+            </div>
+        </div>
+        <hr />
+        <section id="reset-requests-section" class="card">
+            <h2>Solicitações de Redefinição de Senha</h2>
+            <div class="table-responsive">
+            <table id="requestsTable" border="1" cellpadding="6">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Usuário</th>
+                        <th>Email</th>
+                        <th>Status</th>
+                        <th>Criado Em</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+            </div>
+        </section>
+        <section id="list-section" class="card">
+            <h2>Lista de Usuários</h2>
+            <div class="table-responsive">
+            <table id="usersTable" border="1" cellpadding="6">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nome</th>
+                        <th>Email</th>
+                        <th>Tipo</th>
+                        <th>CPF</th>
+                        <th>Telefone</th>
+                        <th>Cursos</th>
+                        <th>Término</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+            </div>
+        </section>
+    </div>
+    </div>
+    <script src="/js/admin_users.js"></script>
+</body>
+</html>

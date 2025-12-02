@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<!-- public/login.html - Frontend HTML template -->
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Facilita SENAI</title>
+    <link rel="stylesheet" href="css/variables.css">
+    <link rel="stylesheet" href="css/login.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="login-body-animated">
+    <div class="login-container">
+        <div class="logo-area">
+            <img src="/images/logo.png" alt="Facilita SENAI" class="logo-img" />
+        </div>
+        <div class="login-card">
+            <div class="role-toggle">
+                <div class="role-slider" aria-hidden="true"></div>
+                <button class="role-btn active" data-role="professor">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                    DOCENTE
+                </button>
+                <button class="role-btn" data-role="student">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                    ALUNO
+                </button>
+            </div>
+            <form id="loginForm">
+                <input type="hidden" id="roleInput" name="role" value="professor">
+                <div class="form-group">
+                    <input type="text" id="email" name="email" placeholder="e-mail ou CPF" required>
+                </div>
+                <div class="form-group">
+                    <input type="password" id="password" name="password" placeholder="senha" required>
+                </div>
+                <button type="submit" class="btn btn-primary btn-block">ENTRAR</button>
+            </form>
+            <div id="errorMessage" class="error-message"></div>
+            <div style="margin-top:12px; text-align:center;">
+                <a href="#" id="firstAccessLink">Primeiro acesso</a>
+                &nbsp;|&nbsp;
+                <a href="#" id="forgotLink">Esqueci minha senha?</a>
+            </div>
+        </div>
+    </div>
+    <div id="forgotModal" class="modal-overlay">
+        <div class="modal">
+            <div class="modal-header">
+                <h3>Esqueci minha senha / Primeiro acesso</h3>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="form-group">
+                <label>Informe seu e-mail</label>
+                <input id="forgotEmail" type="email" />
+            </div>
+            <div style="display:flex; gap:8px; justify-content:flex-end; margin-top:12px;">
+                <button id="sendResetBtn" class="btn btn-primary">Solicitar redefinição</button>
+            </div>
+            <div id="forgotMessage" style="margin-top:10px;color:#333;"></div>
+        </div>
+    </div>
+    <div id="firstAccessModal" class="modal-overlay">
+        <div class="modal">
+            <div class="modal-header">
+                <h3>Primeiro acesso / Alterar senha inicial</h3>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="form-group">
+                <label>E-mail</label>
+                <input id="faEmail" type="email" />
+            </div>
+            <div class="form-group">
+                <label>Senha anterior</label>
+                <input id="faOldPassword" type="password" />
+            </div>
+            <div class="form-group">
+                <label>Nova senha</label>
+                <input id="faNewPassword" type="password" />
+            </div>
+            <div class="form-group">
+                <label>Confirmar nova senha</label>
+                <input id="faConfirmPassword" type="password" />
+            </div>
+            <div style="display:flex; gap:8px; justify-content:flex-end; margin-top:12px;">
+                <button id="submitFirstAccessBtn" class="btn btn-primary">Alterar senha</button>
+            </div>
+            <div id="faMessage" style="margin-top:10px;color:#333;"></div>
+        </div>
+    </div>
+    <script src="js/login.js"></script>
+</body>
+</html>

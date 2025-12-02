@@ -1,0 +1,220 @@
+/* public/css/login.css - Styles frontend UI */
+body {
+    
+    background: linear-gradient(180deg, #053a5a 0%, #013b57 40%, #00283f 100%);
+    background-size: cover;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Inter', sans-serif;
+}
+
+.login-container {
+    width: 100%;
+    max-width: 420px;
+    padding: 20px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center; 
+    min-height: 100vh;
+}
+
+.logo-area {
+    margin-bottom: 40px;
+    color: white;
+}
+
+
+.logo-img {
+    max-width: 220px;
+    width: 100%;
+    height: auto;
+    display: block;
+    margin: 0 auto 12px auto;
+    object-fit: contain;
+    pointer-events: none;
+}
+
+
+.logo-area {
+    max-height: 140px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.logo-area h1 {
+    font-size: 2.6rem;
+    font-weight: 800;
+    letter-spacing: 1.5px;
+    color: #ffffff;
+}
+
+.logo-area .highlight {
+    color: var(--secondary-color);
+    font-style: italic;
+    font-weight: 800;
+}
+
+.login-card {
+    width: 100%;
+    background: rgba(255,255,255,0.04);
+    backdrop-filter: blur(6px);
+    border-radius: 10px;
+    padding: 18px 22px;
+    box-shadow: 0 8px 22px rgba(0,0,0,0.22);
+}
+
+
+
+.role-toggle {
+    display: flex;
+    background: rgba(255, 255, 255, 0.12);
+    border-radius: 12px;
+    padding: 6px;
+    margin: 6px auto 18px auto;
+    backdrop-filter: blur(4px);
+    position: relative; 
+    gap: 6px;
+    max-width: 340px;
+}
+
+.role-btn {
+    flex: 1;
+    background: transparent;
+    color: rgba(255, 255, 255, 0.85);
+    padding: 12px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+}
+
+.role-btn.active {
+    color: var(--primary-color);
+}
+
+
+.role-slider {
+    position: absolute;
+    top: 6px;
+    left: 6px;
+    height: calc(100% - 12px);
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+    transition: transform 260ms cubic-bezier(.2,.9,.25,1), width 260ms cubic-bezier(.2,.9,.25,1);
+    z-index: 0;
+}
+
+
+.role-btn { z-index: 1; }
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 14px 18px;
+    border-radius: 8px;
+    border: none;
+    background: rgba(255, 255, 255, 0.9);
+    font-size: 1rem;
+    color: var(--text-primary);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s;
+}
+
+.form-group input:focus {
+    outline: none;
+    background: white;
+    box-shadow: 0 0 0 3px rgba(255, 102, 0, 0.3);
+}
+
+.btn-block {
+    width: 100%;
+    padding: 15px;
+    font-size: 1.1rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    background: white;
+    color: #053f65; 
+    margin-top: 20px;
+}
+
+.btn-block:hover {
+    background: #f0f0f0;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.error-message {
+    color: #ff6b6b;
+    margin-top: 15px;
+    font-size: 0.9rem;
+    min-height: 20px;
+}
+
+
+.modal-overlay {
+    display: none; 
+    position: fixed;
+    inset: 0; 
+    background: rgba(0,0,0,0.45);
+    align-items: center;
+    justify-content: center;
+    z-index: 1200;
+    padding: 20px;
+}
+.modal-overlay.open {
+    display: flex;
+}
+.modal {
+    background: #ffffff;
+    border-radius: 10px;
+    padding: 20px;
+    max-width: 520px;
+    width: 100%;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.35);
+}
+.modal-header {
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin-bottom:12px;
+}
+.modal .close-modal {
+    background: transparent;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+
+.login-card .links-row {
+    margin-top: 14px;
+    font-size: 0.9rem;
+    color: rgba(255,255,255,0.8);
+}
+.login-card .links-row a {
+    color: #ffffff;
+    text-decoration: none;
+}
+.login-card .links-row a:hover { text-decoration: underline; }
+
+
+.login-card a {
+    color: #ffffff;
+}
+.login-card a:hover {
+    color: #ffffff;
+}
