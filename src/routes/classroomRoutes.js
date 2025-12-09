@@ -7,7 +7,7 @@ const { verifyToken, authorizeRoles } = require('../middlewares/authMiddleware')
 
 
 router.get('/:code/atividades', verifyToken, googleClassroomController.getActivities);
-
+router.post('/:code/sync', verifyToken, authorizeRoles('admin', 'professor'), googleClassroomController.sync);
 
 
 

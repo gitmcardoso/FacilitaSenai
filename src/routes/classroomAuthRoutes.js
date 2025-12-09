@@ -5,5 +5,7 @@ const googleClassroomController = require('../controllers/googleClassroomControl
 
 router.get('/', googleClassroomController.getAuthUrl);
 router.get('/callback', googleClassroomController.authCallback);
+router.get('/status', googleClassroomController.status);
+router.post('/clear-tokens', googleClassroomController.clearTokens);
 
 module.exports = router;

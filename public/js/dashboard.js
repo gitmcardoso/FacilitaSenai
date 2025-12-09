@@ -284,19 +284,30 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // helper to apply active state and page title for a module
+    function setActiveModule(moduleName) {
+        if (!moduleName) return;
+        document.querySelectorAll('.nav-link[data-module]').forEach(l => l.classList.remove('active'));
+        const activeLink = document.querySelector(`.nav-link[data-module="${moduleName}"]`);
+        if (activeLink) {
+            activeLink.classList.add('active');
+            const span = activeLink.querySelector('span');
+            if (span && pageTitle) pageTitle.textContent = span.textContent || 'Dashboard';
+        }
+    }
+
     navLinks.forEach(link => {
         link.addEventListener('click', (e) => {
             e.preventDefault();
-
-            
-            navLinks.forEach(l => l.classList.remove('active'));
-            link.classList.add('active');
-
             const moduleName = link.dataset.module;
-            const title = link.querySelector('span').textContent;
-
-            pageTitle.textContent = title;
-            loadModule(moduleName);
+            if (moduleName) {
+                // set active immediately for instant visual feedback
+                setActiveModule(moduleName);
+                // also update hash to enable back/forward and history
+                location.hash = moduleName;
+                // load the module immediately (hashchange may be delayed)
+                loadModule(moduleName);
+            }
         });
     });
 
@@ -309,7 +320,22 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     
-    loadModule('home');
+    // load initial module from hash (if present) so direct links work
+    (function loadInitialFromHash() {
+        const hash = (location.hash || '').replace('#', '').trim();
+        const initial = hash ? hash : 'home';
+        setActiveModule(initial);
+        loadModule(initial);
+    })();
+
+    // allow back/forward navigation between modules using hash
+    window.addEventListener('hashchange', () => {
+        const moduleName = (location.hash || '').replace('#', '').trim();
+        if (moduleName) {
+            setActiveModule(moduleName);
+            loadModule(moduleName);
+        }
+    });
 
     function translateRole(role) {
         const map = {
@@ -360,50 +386,68 @@ document.addEventListener('DOMContentLoaded', () => {
     async function loadModule(moduleName) {
         contentArea.innerHTML = '<div class="loading">Carregando...</div>';
 
-        
-        
-
         let html = '';
-
-        switch (moduleName) {
-            case 'home':
-                html = getHomeModule(user);
-                break;
-            case 'schedules':
-                html = await getSchedulesModule(user);
-                break;
-            case 'classroom':
-                html = getClassroomModule();
-                break;
-            case 'replacements':
-                html = await getReplacementsModule(user);
-                break;
-            case 'jobs':
-                html = await getJobsModule();
-                break;
-            case 'users':
-                try {
-                    
-                    const res = await fetch('/admin_users.html');
-                    if (!res.ok) throw new Error('Failed to load users module');
-                    const text = await res.text();
-                    const parser = new DOMParser();
-                    const doc = parser.parseFromString(text, 'text/html');
-                    html = doc.body.innerHTML;
-                } catch (e) {
-                    console.error(e);
-                    html = '<div class="card"><h3>Erro ao carregar módulo de usuários</h3></div>';
-                }
-                break;
-                break;
-            default:
-                html = '<div class="card"><h3>Módulo não encontrado</h3></div>';
+        
+        try {
+            switch (moduleName) {
+                case 'home':
+                    html = getHomeModule(user);
+                    break;
+                case 'schedules':
+                    html = await Promise.race([
+                        getSchedulesModule(user),
+                        new Promise((_, reject) => setTimeout(() => reject(new Error('Timeout')), 8000))
+                    ]).catch(err => {
+                        console.error('schedules load error:', err);
+                        return '<div class="card"><h3>Erro ao carregar agendamentos</h3><p>Tente novamente em alguns momentos.</p></div>';
+                    });
+                    break;
+                case 'classroom':
+                    html = getClassroomModule();
+                    break;
+                case 'replacements':
+                    html = await Promise.race([
+                        getReplacementsModule(user),
+                        new Promise((_, reject) => setTimeout(() => reject(new Error('Timeout')), 8000))
+                    ]).catch(err => {
+                        console.error('replacements load error:', err);
+                        return '<div class="card"><h3>Erro ao carregar reposições</h3><p>Tente novamente em alguns momentos.</p></div>';
+                    });
+                    break;
+                case 'jobs':
+                    html = await Promise.race([
+                        getJobsModule(),
+                        new Promise((_, reject) => setTimeout(() => reject(new Error('Timeout')), 8000))
+                    ]).catch(err => {
+                        console.error('jobs load error:', err);
+                        return '<div class="card"><h3>Erro ao carregar vagas</h3><p>Tente novamente em alguns momentos.</p></div>';
+                    });
+                    break;
+                case 'users':
+                    try {
+                        const res = await fetch('/admin_users.html');
+                        if (!res.ok) throw new Error('Failed to load users module');
+                        const text = await res.text();
+                        const parser = new DOMParser();
+                        const doc = parser.parseFromString(text, 'text/html');
+                        html = doc.body.innerHTML;
+                    } catch (e) {
+                        console.error(e);
+                        html = '<div class="card"><h3>Erro ao carregar módulo de usuários</h3></div>';
+                    }
+                    break;
+                default:
+                    html = '<div class="card"><h3>Módulo não encontrado</h3></div>';
+            }
+        } catch (error) {
+            console.error('loadModule error:', error);
+            html = '<div class="card"><h3>Erro ao carregar módulo</h3></div>';
         }
 
         contentArea.innerHTML = html;
         
+        // Initialize module-specific scripts
         if (moduleName === 'users') {
-            
             if (window.initAdminUsers) {
                 try { window.initAdminUsers(); } catch (e) { console.error('initAdminUsers error', e); }
             } else {
@@ -415,9 +459,12 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         
         if (moduleName === 'home' && window.initHomeModule) {
-            try { window.initHomeModule(); } catch (e) { console.error('initHomeModule error', e); }
+            // delay slightly to ensure DOM is fully rendered
+            setTimeout(() => {
+                try { window.initHomeModule(); } catch (e) { console.error('initHomeModule error', e); }
+            }, 100);
         }
-        lucide.createIcons(); 
+        lucide.createIcons();
     }
 
     
@@ -830,6 +877,16 @@ document.addEventListener('DOMContentLoaded', () => {
     function getHomeModule(user) {
         return `
             <div class="dashboard-grid">
+                <!-- Hero banner (laranja) -->
+                <div class="card hero-orange">
+                    <div style="width:100%; display:flex; align-items:center; justify-content:space-between;">
+                        <div>
+                            <h3 style="margin:0;">Painel Rápido</h3>
+                            <p style="margin:0; opacity:0.95;">Resumo e atalhos importantes</p>
+                        </div>
+                        <div style="text-align:right; opacity:0.95; font-size:0.95rem;">Acesse suas ações rápidas</div>
+                    </div>
+                </div>
                 <div class="card home-welcome" style="grid-column: 1 / -1;">
                     <div style="display:flex; justify-content:space-between; align-items:center;">
                         <div>
@@ -901,7 +958,13 @@ document.addEventListener('DOMContentLoaded', () => {
                     <h3>Próximos Agendamentos</h3>
                     <div id="upcomingSchedulesContent">Carregando...</div>
                 </div>
-                
+                <!-- Caixa azul lateral (pequena) -->
+                <div class="card side-blue" style="grid-column: 2;">
+                    <div style="padding:12px; text-align:center;">
+                        <h4 style="margin:0; color:#fff; font-size:1rem;">Aulas Confirmadas</h4>
+                        <p style="margin:6px 0 0 0; color:rgba(255,255,255,0.9);">--</p>
+                    </div>
+                </div>
                 <div class="card large home-secondary" id="secondaryCard">
                     <h3 id="secondaryCardTitle">Carregando...</h3>
                     <div id="secondaryCardContent">Aguarde...</div>
@@ -912,7 +975,34 @@ document.addEventListener('DOMContentLoaded', () => {
 
     
     window.initHomeModule = async function () {
+        // Helper to wait for element to exist in DOM
+        const waitForElement = (selector, timeout = 3000) => {
+            return new Promise((resolve) => {
+                const element = document.querySelector(selector);
+                if (element) return resolve(element);
+                
+                const observer = new MutationObserver(() => {
+                    const el = document.querySelector(selector);
+                    if (el) {
+                        observer.disconnect();
+                        resolve(el);
+                    }
+                });
+                
+                observer.observe(document.body, { childList: true, subtree: true });
+                
+                setTimeout(() => {
+                    observer.disconnect();
+                    resolve(null);
+                }, timeout);
+            });
+        };
+        
         try {
+            // Ensure elements are in the DOM before fetching
+            await waitForElement('#upcomingSchedulesContent', 2000);
+            await waitForElement('#secondaryCardContent', 2000);
+            
             await fetchUpcomingSchedulesCard();
             await fetchSecondaryCard();
         } catch (e) { console.error('initHomeModule error', e); }
