@@ -1,0 +1,21 @@
+node_modules/
+.env
+.env.local
+.env.*.local
+*.log
+*.swp
+*.swo
+*~
+.DS_Store
+dist/
+build/
+.vscode/
+.idea/
+*.iml
+
+# Google Classroom tokens and credentials
+src/classroom/.google-classroom-tokens.json
+src/classroom/google-credentials.json
+
+# Sensitive files
+.env.*.secrets
